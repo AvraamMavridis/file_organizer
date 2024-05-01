@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use std::fs;
 use std::env;
-use std::fs::DirEntry;
 use std::path::Path;
 
 type DirEntries = Vec<fs::DirEntry>;
