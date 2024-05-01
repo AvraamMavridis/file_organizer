@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 use std::env;
+use std::fs::DirEntry;
 use std::path::Path;
 
 type DirEntries = Vec<fs::DirEntry>;
@@ -20,8 +21,10 @@ fn list_files_in_directory(path: &Path) -> DirEntries {
 fn categorize_files(files: DirEntries) -> HashMap<String, DirEntries> {
     let mut categories = HashMap::new();
     for file in files {
-        let file = file.path().extension().unwrap_or_default().to_string_lossy().to_lowercase();
-        println!("{}", file)
+        let filetype: String = file.path().extension().unwrap_or_default().to_string_lossy().to_lowercase();
+        if filetype != "" {
+            categories.entry(filetype).or_insert_with(Vec::new).push(file);
+        }
     }
 
     categories
@@ -36,5 +39,9 @@ fn main() {
     let path = Path::new(&args[1]);
     let files = list_files_in_directory(path);
 
-    categorize_files(files);
+    let categories = categorize_files(files);
+
+    for cat in categories {
+        println!("{}", cat.0)
+    }
 }
