@@ -1,30 +1,29 @@
 mod categories;
+mod files;
 
+use crate::categories::get_category;
+use crate::files::*;
 use std::collections::HashMap;
 use std::env;
 use std::fs;
 use std::path::Path;
-use crate::categories::CATEGORIES;
 
-type DirEntries = Vec<fs::DirEntry>;
 type Categories = HashMap<String, Vec<String>>;
 
-fn list_files_in_directory(path: &Path) -> DirEntries {
-    let mut files = vec![];
-    if path.is_dir() {
-        if let Ok(entries) = fs::read_dir(path) {
-            for entry in entries.filter_map(Result::ok) {
-                files.push(entry);
-            }
-        }
-    }
-    files
-}
-
-fn get_category(ext: &str) -> Option<&'static str> {
-    CATEGORIES.get(ext).cloned()
-}
-
+/// Categorizes files based on their file type.
+///
+/// This function takes a list of directory entries and categorizes them based on their file type.
+/// It creates a HashMap where the keys are the categories (file types) and the values are vectors
+/// containing the paths of the files belonging to that category.
+///
+/// # Arguments
+///
+/// * `files` - A list of directory entries to be categorized.
+///
+/// # Returns
+///
+/// * A HashMap where the keys are the categories (file types) and the values are vectors
+///   containing the paths of the files belonging to that category.
 fn categorize_files(files: DirEntries) -> HashMap<String, Vec<String>> {
     let mut categories: HashMap<String, Vec<String>> = HashMap::new();
     for file in files {
@@ -46,19 +45,16 @@ fn categorize_files(files: DirEntries) -> HashMap<String, Vec<String>> {
     categories
 }
 
-fn move_files(path: &str, category_files: &[String]) {
-    let new_dir_path = Path::new(&path);
-
-    for file in category_files {
-        let old_path = Path::new(file);
-        let new_path = new_dir_path.join(old_path.file_name().unwrap());
-        match fs::rename(&old_path, &new_path) {
-            Ok(_) => println!("Successfully moved file to {}", new_path.display()),
-            Err(e) => println!("Failed to move file: {}", e),
-        }
-    }
-}
-
+/// Handles the categorization of files.
+///
+/// This function takes a directory path, a category, and a list of files. It creates a new directory
+/// for the category if it doesn't exist, and then moves the files into the new directory.
+///
+/// # Arguments
+///
+/// * `path` - The directory path where the new category directory will be created.
+/// * `cat` - The category of the files.
+/// * `category_files` - A list of files to be moved into the new category directory.
 fn handle_category(path: &str, cat: &str, category_files: &[String]) {
     let new_dir_path = Path::new(path).join(cat);
     if !new_dir_path.exists() {
@@ -69,7 +65,6 @@ fn handle_category(path: &str, cat: &str, category_files: &[String]) {
     }
     move_files(path, category_files);
 }
-
 
 fn main() {
     let args: Vec<String> = env::args().collect();
