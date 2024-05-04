@@ -65,5 +65,5 @@ static CATEGORIES: Lazy<HashMap<&'static str, &'static str>> = Lazy::new(|| {
 ///
 /// * An Option containing the category as a static string if found, or None if not found.
 pub fn get_category(ext: &str) -> Option<&'static str> {
-  CATEGORIES.get(ext).cloned()
+    CATEGORIES.get(ext).cloned()
 }

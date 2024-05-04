@@ -8,6 +8,12 @@ This project is a Rust application that categorizes files in a directory based o
 cargo run /path/to/directory
 ```
 
+By default it will only move the files in the root directory, if you want to move also the files in subdirectories pass the `-r` flag
+
+```
+cargo run /path/to/directory -r
+```
+
 # How to add in your command line
 
 1. Download the latest release

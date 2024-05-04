@@ -63,7 +63,9 @@ fn handle_category(path: &str, cat: &str, category_files: &[String]) {
             return;
         }
     }
-    move_files(path, category_files);
+
+    println!("{}", new_dir_path.to_str().unwrap());
+    move_files(new_dir_path.to_str().unwrap(), category_files);
 }
 
 fn main() {
@@ -73,11 +75,19 @@ fn main() {
         return;
     }
     let path = &args[1];
-    let files = list_files_in_directory(Path::new(path));
+
+    let files: Vec<fs::DirEntry>;
+
+    if args.contains(&"-r".to_string()) {
+        files = list_files_in_directories_recursively(Path::new(path));
+    } else {
+        files = list_files_in_directory(Path::new(path));
+    }
 
     let categories: Categories = categorize_files(files);
 
     for (cat, files) in &categories {
+        println!("{} {}", path, &cat);
         handle_category(path, &cat, files);
     }
 }
