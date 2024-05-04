@@ -1,6 +1,32 @@
 # File Categorizer
 
+<img src="./logo.webp" alt="File Organizer Logo" width="300" height="300">
+
 This project is a Rust application that categorizes files in a directory based on their file types. It creates a new directory for each category and moves the files into their respective directories.
+
+## Example
+
+### Before Running File Categorizer
+
+```
+file1.txt
+file2.jpg
+file3.pdf
+file4.txt
+file5.jpg
+```
+
+### After Running File Categorizer
+
+```
+- images/
+-- file2.jpg
+-- file5.jpg
+- documents/
+-- file1.txt
+-- file3.pdf
+-- file4.txt
+```
 
 # How to Use
 
