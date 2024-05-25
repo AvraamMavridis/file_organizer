@@ -55,7 +55,7 @@ sudo mv target/release/file_organizer /usr/local/bin
 Open your ~/.zshrc file in a text editor and add an alias to run your program. Replace my_project with the name of your executable:
 
 ```
-echo 'alias my_project="/usr/local/bin/my_project"' >> ~/.zshrc
+echo 'alias file_organizer="/usr/local/bin/file_organizer"' >> ~/.zshrc
 ```
 
 4. Source your zshrc file: To make the changes take effect, you need to source your ~/.zshrc file:
